@@ -6,7 +6,8 @@ let selectedCol = -1;  // Selected column
 let movingItems = 0;  // Number of tiles currently being moved
 let count_reload = 5;  // The number of remaining mixing. If you change this parameter, you also need to change the value in the click_for_start function
 let points = 0;  // Points
-let remaining_moves = 10;  // The number of remaining moves. If you change this parameter, you also need to change the value in the click_for_start function
+let remaining_moves = 8;  // The number of remaining moves. If you change this parameter, you also need to change the value in the click_for_start function
+let id_start = 0;  // ID that started again
 	
 let jewels = new Array();  // Two-dimensional array of tiles on the field
 	
@@ -35,7 +36,6 @@ const increase_points = 5;  // The number by which points are increased when the
 
 const tileClass = "tile";  // Tile element class
 const tileIdPrefix = "tile";  // Prefix for identifiers
-
 
 /* Creating a field grid */
 for(i = 0; i < numRows; i++)
@@ -75,6 +75,56 @@ function create_field_for_tile()
     });
 	
 }
+
+/* Creating an information field */
+function information_field()
+{
+	$("#fieledfortile").append('<div id = "inf_field"><p>Приветствую Вас! <p>Для победы Вам нужно набрать ' + finish_points + ' очков.</div>');
+	
+	$("#inf_field").css({
+		"position": "absolute",
+		"left": Math.floor(width_window / 19.2) + "px",
+		"top": Math.floor(height_window / 3.876) + "px",
+		"color": "white",
+		"width": Math.floor(width_window / 7) + "px",
+		"font-size": Math.floor(width_window / 106.6) + "pt",
+		"color": "white",
+		"font-family": "Marvin",
+		"background": "url(img/field_for_text.gif",
+		"background-size": Math.floor(width_window / 7) + "px " + Math.floor(height_window / 5) + "px",
+		"border-radius": Math.floor(width_window / 192) + "px",
+		"text-align": "center",
+		"-webkit-touch-callout": "none",
+		"-webkit-user-select": "none",
+		"-khtml-user-select": "none",
+		"-moz-user-select": "none",
+		"-ms-user-select": "none",
+		"user-select": "none"
+    });
+}
+
+/* Creating start button */
+function start_button()
+{
+	$("#fieledfortile").append('<button id="start_button">Начать игру!</button>');
+	
+	$("#start_button").css({
+		"position": "absolute",
+		"left": Math.floor(width_window / 13.5) + "px",
+		"top": Math.floor(height_window / 2) + "px",
+		"background": "url(img/button.gif)",
+		"background-size": Math.floor(width_window / 10) + "px " + Math.floor(height_window / 15) + "px",
+		"border": "0px",
+		"font-size": Math.floor(width_window / 106.6) + "pt",
+		"color": "white",
+		"font-family": "Marvin",
+		"outline": "none",
+		"cursor": "pointer",
+		"width": Math.floor(width_window / 10) + "px",
+		"height": Math.floor(height_window / 15) + "px"
+	});
+}
+
 
 /* Creating a playing field */
 function create_game_field()
@@ -124,7 +174,13 @@ function create_button_reload()
 		"outline": "none",
 		"cursor": "pointer",
 		"width": Math.floor(width_window / 13.91) + "px",
-		"height": Math.floor(height_window / 32.3) + "px"
+		"height": Math.floor(height_window / 32.3) + "px",
+		"-webkit-touch-callout": "none",
+		"-webkit-user-select": "none",
+		"-khtml-user-select": "none",
+		"-moz-user-select": "none",
+		"-ms-user-select": "none",
+		"user-select": "none"
 	});
 }
 
@@ -145,7 +201,13 @@ function create_text_reload()
 		"background": "url(img/field_for_text.gif",
 		"background-size": Math.floor(width_window / 7.68) + "px " + Math.floor(height_window / 17.62) + "px",
 		"border-radius": Math.floor(width_window / 192) + "px",
-		"text-align": "center"
+		"text-align": "center",
+		"-webkit-touch-callout": "none",
+		"-webkit-user-select": "none",
+		"-khtml-user-select": "none",
+		"-moz-user-select": "none",
+		"-ms-user-select": "none",
+		"user-select": "none"
 	});
 }
 
@@ -166,7 +228,13 @@ function create_text_points()
 		"background": "url(img/field_for_text.gif",
 		"background-size": Math.floor(width_window / 7.68) + "px " + Math.floor(height_window / 17.62) + "px",
 		"border-radius": Math.floor(width_window / 192) + "px",
-		"text-align": "center"
+		"text-align": "center",
+		"-webkit-touch-callout": "none",
+		"-webkit-user-select": "none",
+		"-khtml-user-select": "none",
+		"-moz-user-select": "none",
+		"-ms-user-select": "none",
+		"user-select": "none"
 	});
 }
 
@@ -187,7 +255,13 @@ function create_text_moves()
 		"background": "url(img/field_for_text.gif",
 		"background-size": Math.floor(width_window / 7.68) + "px " + Math.floor(height_window / 17.62) + "px",
 		"border-radius": Math.floor(width_window / 192) + "px",
-		"text-align": "center"
+		"text-align": "center",
+		"-webkit-touch-callout": "none",
+		"-webkit-user-select": "none",
+		"-khtml-user-select": "none",
+		"-moz-user-select": "none",
+		"-ms-user-select": "none",
+		"user-select": "none"
 	});
 }
 
@@ -208,7 +282,13 @@ function start_stop()
 		"background": "url(img/field_for_text.gif",
 		"background-size": Math.floor(width_window / 7.1) + "px " + Math.floor(height_window / 17.62) + "px",
 		"border-radius": Math.floor(width_window / 192) + "px",
-		"text-align": "center"
+		"text-align": "center",
+		"-webkit-touch-callout": "none",
+		"-webkit-user-select": "none",
+		"-khtml-user-select": "none",
+		"-moz-user-select": "none",
+		"-ms-user-select": "none",
+		"user-select": "none"
 	});
 	
 	$("#fieldfortext").append('<button id="button_start">Да!</button>');
@@ -304,6 +384,46 @@ function del_all_tile()
 	del_element.remove();
 }
 
+/* Function to start a ringtone when deleting tiles */
+function sound_del_tile()
+{
+	let audio = new Audio();
+	
+	audio.src = 'sound/del_tile.mp3';
+	
+	audio.autoplay = true;
+}
+
+/* Function to start a ringtone when stirring tiles*/
+function sound_stir_tile()
+{
+	let audio = new Audio();
+	
+	audio.src = 'sound/stirring.mp3';
+	
+	audio.autoplay = true;
+}
+
+/* Function to start a ringtone when game over */
+function sound_game_over()
+{
+	let audio = new Audio();
+	
+	audio.src = 'sound/game_over.mp3';
+	
+	audio.autoplay = true;
+}
+
+/* Function to start a ringtone when game win */
+function sound_game_win()
+{
+	let audio = new Audio();
+	
+	audio.src = 'sound/game_win.mp3';
+	
+	audio.autoplay = true;
+}
+
 /* The generation of the initial set of tiles */
 function gen_set_tile()
 {
@@ -317,7 +437,7 @@ function gen_set_tile()
 			*/
 			jewels[i][j] = Math.floor(Math.random() * 8);  // 8 because there are 8 elements in bgColors
 
-			$("#gamefield").append('<div class = "' + tileClass + '" id = "' + tileIdPrefix + '_' + i + '_' + j + '"></div>');
+			$("#gamefield").append('<div class = "' + tileClass + '" id = "' + tileIdPrefix + '_' + i + '_' + j + '"></div>').addClass("start");
     
 			$("#" + tileIdPrefix + "_" + i + "_" + j).css({
 				"top": ((i * tileSize) + Math.floor(height_window / 242.25)) + "px",
@@ -336,27 +456,32 @@ function gen_set_tile()
 /* Function for shuffling tiles and changing the number of shuffles */
 function click_for_reload() 
 {
-	if (count_reload > 0)
+	if (document.getElementById("gamefield") != null)
 	{
-		count_reload--;
-	
-		text_reload_del = document.getElementById("text_reload");
-		
-		text_reload_del.remove();
-		
-		create_text_reload()
-	
-		for(i = 0; i < numRows; i++)
+		if (count_reload > 0)
 		{
-			for(j = 0; j < numCols; j++)
-			{
-				let del_element = document.getElementById(tileIdPrefix + '_' + i + '_' + j);
-
-				del_element.remove();
-			}
-		}
+			count_reload--;
+	
+			text_reload_del = document.getElementById("text_reload");
 		
-		gen_set_tile();
+			text_reload_del.remove();
+		
+			create_text_reload()
+	
+			for(i = 0; i < numRows; i++)
+			{
+				for(j = 0; j < numCols; j++)
+				{
+					let del_element = document.getElementById(tileIdPrefix + '_' + i + '_' + j);
+
+					del_element.remove();
+				}
+			}
+		
+			gen_set_tile();
+		
+			sound_stir_tile()
+		}	
 	}
 };
 
@@ -374,7 +499,9 @@ function click_for_start()
 	movingItems = 0;
 	count_reload = 5;
 	points = 0;  
-	remaining_moves = 10;
+	remaining_moves = 8;
+	
+	id_start = 1;
 	
 	start_game();
 }
@@ -505,7 +632,7 @@ function removeTiles(row, col)
 	if(isHorizontalStreak(row, col))
 	{
 		tmp = col;
-		console.log("Horizontal");
+
 		while(tmp > 0 && jewels[row][tmp - 1] == tileValue)
 		{
 			$("#" + tileIdPrefix + "_" + row + "_" + (tmp - 1)).addClass("remove");
@@ -533,6 +660,8 @@ function removeTiles(row, col)
 	
 	jewels[row][col] = -1;
 	
+	sound_del_tile();
+	
 	points += increase_points;
 	
 	remaining_moves--;
@@ -543,12 +672,16 @@ function removeTiles(row, col)
 	{
 		win();
 		
+		sound_game_win()
+		
 		auxiliary_function();
 	}
 	
 	if (remaining_moves == 0 && points < finish_points)
 	{
 		lose();
+		
+		sound_game_over();
 		
 		auxiliary_function();
 	}	
@@ -607,6 +740,7 @@ function checkFalling()
 		
 			complete: function() {
 				$(this).removeClass("fall");
+				
 				checkRemove();
 			}
 		});
@@ -743,18 +877,13 @@ function tapHandler(event, target)
 	}
 }
 
-function start_game()
+/* auxiliary function 2 */
+function auxiliary_function_2()
 {
-	create_field();  // Creating a field
-	
-	create_field_for_tile();  // Creating a field for tiles
-	
 	create_game_field();  // Creating a playing field
-	
-	field_for_text();  // Creating a field for displaying game data
-	
+		
 	create_button_reload();  // Creating a button for shuffling tiles
-	
+		
 	create_text_reload();  // Creating a label with the output of the shuffle counter
 	
 	create_text_points();  // Creating a label with the output of points earned
@@ -762,7 +891,14 @@ function start_game()
 	create_text_moves();  // Creating a label with the remaining moves output
 	
 	gen_set_tile();  // The generation of the initial set of tiles
-	
+
+	if (id_start == 0)
+	{
+		document.getElementById('inf_field').remove();
+		
+		document.getElementById('start_button').remove();
+	}
+		
 	let button_reload = document.getElementById('button_reload');
 
 	button_reload.onclick = click_for_reload;
@@ -771,6 +907,30 @@ function start_game()
 	$("#gamefield").swipe({
 		tap: tapHandler
 	});
+}
+
+function start_game()
+{ 
+	create_field();  // Creating a field
+	
+	create_field_for_tile();  // Creating a field for tiles
+	
+	field_for_text();  // Creating a field for displaying game data
+
+	if (id_start == 0)
+	{
+		information_field();
+	
+		start_button();
+	
+		let button_start_game = document.getElementById('start_button');
+	
+		button_start_game.onclick = auxiliary_function_2;
+	}
+	else
+	{
+		auxiliary_function_2();
+	}
 }
 
 $(document).ready(start_game);
