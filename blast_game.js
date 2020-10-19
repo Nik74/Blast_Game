@@ -1,4 +1,18 @@
 /* Customization */
+const width_window = $(window).width();  // Width of the browser window
+const height_window = $(window).height();  // Height of the browser window
+
+const tileSize = Math.floor($(window).height() / 15.21875);   // Size of the tile
+
+const numRows = 12;  // Number of rows
+const numCols = 7;  // Number of columns
+const finish_points = 1000;  // The number of points required to win
+const increase_points = 5;  // The number by which points are increased when the tile is destroyed
+const moves = 80;  // The number of moves
+
+const tileClass = "tile";  // Tile element class
+const tileIdPrefix = "tile";  // Prefix for identifiers
+
 let gameState = "pick";  // Current state of the field - waiting for tile selection
 
 let selectedRow = -1;  // Selected row
@@ -6,7 +20,7 @@ let selectedCol = -1;  // Selected column
 let movingItems = 0;  // Number of tiles currently being moved
 let count_reload = 5;  // The number of remaining mixing. If you change this parameter, you also need to change the value in the click_for_start function
 let points = 0;  // Points
-let remaining_moves = 8;  // The number of remaining moves. If you change this parameter, you also need to change the value in the click_for_start function
+let remaining_moves = moves;  // The number of remaining moves. If you change this parameter, you also need to change the value in the click_for_start function
 let id_start = 0;  // ID that started again
 	
 let jewels = new Array();  // Two-dimensional array of tiles on the field
@@ -23,20 +37,6 @@ let bgColors = new Array(
 	"magenta.gif"
 );
 
-
-const width_window = $(window).width();  // Width of the browser window
-const height_window = $(window).height();  // Height of the browser window
-
-const tileSize = Math.floor(height_window / 15.21875);   // Size of the tile
-
-const numRows = 12;  // Number of rows
-const numCols = 7;  // Number of columns
-const finish_points = 100;  // The number of points required to win
-const increase_points = 5;  // The number by which points are increased when the tile is destroyed
-
-const tileClass = "tile";  // Tile element class
-const tileIdPrefix = "tile";  // Prefix for identifiers
-
 /* Creating a field grid */
 for(i = 0; i < numRows; i++)
 {
@@ -52,12 +52,12 @@ for(i = 0; i < numRows; i++)
 function create_field()
 {
 	$("body").append('<div id = "totalfield"></div>');
-	
+
 	$("#totalfield").css({
 		"background-color": "#071627",
-		"position": "relative",
-		"width": (numCols * tileSize) + Math.floor(width_window / 3) + "px",
-		"height": (numRows * tileSize) + Math.floor(height_window / 10) + "px"
+		"position": "relative",		
+		"width": (width_window - Math.floor($(window).width() / 128)) + "px",
+		"height": (height_window - Math.floor($(window).height() / 57.29)) + "px"
     });	
 }
 
@@ -71,15 +71,16 @@ function create_field_for_tile()
 		"background-size": (numCols * tileSize + Math.floor(width_window / 96)) + "px " + (numRows * tileSize  + Math.floor(height_window / 48.45)) + "px",
 		"position": "relative",
 		"width": (numCols * tileSize + Math.floor(width_window / 96)) + "px",
-		"height": (numRows * tileSize + Math.floor(height_window / 48.45)) + "px"
+		"height": (numRows * tileSize + Math.floor(height_window / 48.45)) + "px",
+		"left": Math.floor(width_window / 4.26) + "px",
+		"top": Math.floor(height_window / 11.195) + "px"
     });
-	
 }
 
 /* Creating an information field */
 function information_field()
 {
-	$("#fieledfortile").append('<div id = "inf_field"><p>Приветствую Вас! <p>Для победы Вам нужно набрать ' + finish_points + ' очков.</div>');
+	$("#fieledfortile").append('<div id = "inf_field"><p>Приветствую Вас! <p>Для победы Вам нужно набрать ' + finish_points + ' очков за ' + moves + ' ходов.</div>');
 	
 	$("#inf_field").css({
 		"position": "absolute",
@@ -87,11 +88,12 @@ function information_field()
 		"top": Math.floor(height_window / 3.876) + "px",
 		"color": "white",
 		"width": Math.floor(width_window / 7) + "px",
+		"height": Math.floor(height_window / 5.5) + "px",
 		"font-size": Math.floor(width_window / 106.6) + "pt",
 		"color": "white",
 		"font-family": "Marvin",
 		"background": "url(img/field_for_text.gif",
-		"background-size": Math.floor(width_window / 7) + "px " + Math.floor(height_window / 5) + "px",
+		"background-size": Math.floor(width_window / 7) + "px " + Math.floor(height_window / 5.5) + "px",
 		"border-radius": Math.floor(width_window / 192) + "px",
 		"text-align": "center",
 		"-webkit-touch-callout": "none",
@@ -125,7 +127,6 @@ function start_button()
 	});
 }
 
-
 /* Creating a playing field */
 function create_game_field()
 {	
@@ -146,13 +147,13 @@ function field_for_text()
 	$("#totalfield").append('<div id = "fieldfortext"></div>');
 		
 	$("#fieldfortext").css({
-		"left": ((numCols * tileSize) + Math.floor(width_window / 38.4)) + "px",
-		"top": -(numRows * tileSize + Math.floor(height_window / 48.45)) + "px",
+		"left": (numCols * tileSize + Math.floor(width_window / 3.2)) + "px",
+		"top": -(Math.floor(height_window / 1.403)) + "px",
 		"background": "url(img/field.gif",
-		"background-size": Math.floor(width_window / 4.1) + "px " + Math.floor(height_window / 1.24) + "px",
+		"background-size": Math.floor(width_window / 4.1) + "px " + (numRows * tileSize + Math.floor(height_window / 48.45)) + "px",
 		"position": "relative",
 		"width": Math.floor(width_window / 4.1) + "px",
-		"height": Math.floor(height_window / 1.24) + "px"
+		"height": (numRows * tileSize + Math.floor(height_window / 48.45)) + "px"
     });
 }
 
@@ -195,6 +196,7 @@ function create_text_reload()
 		"top": Math.floor(height_window / 64.6) + "px",
 		"color": "white",
 		"width": Math.floor(width_window / 7.68) + "px",
+		"height": Math.floor(height_window / 17.62) + "px",
 		"font-size": Math.floor(width_window / 106.6) + "pt",
 		"color": "white",
 		"font-family": "Marvin",
@@ -222,11 +224,12 @@ function create_text_points()
 		"top": Math.floor(height_window / 9.69) + "px",
 		"color": "white",
 		"width": Math.floor(width_window / 12.8) + "px",
+		"height": Math.floor(height_window / 36) + "px",
 		"font-size": Math.floor(width_window / 106.6) + "pt",
 		"color": "white",
 		"font-family": "Marvin",
 		"background": "url(img/field_for_text.gif",
-		"background-size": Math.floor(width_window / 7.68) + "px " + Math.floor(height_window / 17.62) + "px",
+		"background-size": Math.floor(width_window / 7.68) + "px " + Math.floor(height_window / 36) + "px",
 		"border-radius": Math.floor(width_window / 192) + "px",
 		"text-align": "center",
 		"-webkit-touch-callout": "none",
@@ -249,11 +252,12 @@ function create_text_moves()
 		"top": Math.floor(height_window / 6.25) + "px",
 		"color": "white",
 		"width": Math.floor(width_window / 7.68) + "px",
+		"height": Math.floor(height_window / 36) + "px",
 		"font-size": Math.floor(width_window / 106.6) + "pt",
 		"color": "white",
 		"font-family": "Marvin",
 		"background": "url(img/field_for_text.gif",
-		"background-size": Math.floor(width_window / 7.68) + "px " + Math.floor(height_window / 17.62) + "px",
+		"background-size": Math.floor(width_window / 7.68) + "px " + Math.floor(height_window / 36) + "px",
 		"border-radius": Math.floor(width_window / 192) + "px",
 		"text-align": "center",
 		"-webkit-touch-callout": "none",
@@ -276,11 +280,12 @@ function start_stop()
 		"top": Math.floor(height_window / 4.4) + "px",
 		"color": "white",
 		"width": Math.floor(width_window / 7.1) + "px",
+		"height": Math.floor(height_window / 34) + "px",
 		"font-size": Math.floor(width_window / 106.6) + "pt",
 		"color": "white",
 		"font-family": "Marvin",
 		"background": "url(img/field_for_text.gif",
-		"background-size": Math.floor(width_window / 7.1) + "px " + Math.floor(height_window / 17.62) + "px",
+		"background-size": Math.floor(width_window / 7.1) + "px " + Math.floor(height_window / 34) + "px",
 		"border-radius": Math.floor(width_window / 192) + "px",
 		"text-align": "center",
 		"-webkit-touch-callout": "none",
@@ -331,10 +336,9 @@ function start_stop()
 /* Create a block with the output of loss */
 function lose()
 {
-	$("#fieledfortile").append('<div id = "losefield"></div>');
+	$("#gamefield").append('<div id = "losefield"></div>');
 	
 	$("#losefield").css({
-		"left": Math.floor(width_window / 192) + "px",
 		"top": Math.floor(height_window / 96.9) + "px",
 		"position": "relative",
 		"width": (numCols * tileSize) + "px",
@@ -347,10 +351,9 @@ function lose()
 /* Creating a block with withdrawal of winnings */
 function win()
 {
-	$("#fieledfortile").append('<div id = "winfield"></div>');
+	$("#gamefield").append('<div id = "winfield"></div>');
 	
 	$("#winfield").css({
-		"left": Math.floor(width_window / 192) + "px",
 		"top": Math.floor(height_window / 96.9) + "px",
 		"position": "relative",
 		"width": (numCols * tileSize) + "px",
@@ -379,9 +382,29 @@ function del_text_points_and_moves()
 /* A function to remove the tiles at a loss */
 function del_all_tile()
 {	
-	del_element = document.getElementById("gamefield");
+	for(i = 0; i < numRows; i++)
+	{
+		for(j = 0; j < numCols; j++)
+		{
+			$("#" + tileIdPrefix + "_" + i + "_" + j).addClass("remove");
+
+			jewels[i][j] = -1;
+		}
+	}
 	
-	del_element.remove();
+	$.each($(".remove"), function(){
+		movingItems++;
+    
+		$(this).animate({
+			opacity:0
+		},
+		{
+			duration: 600,
+			complete: function() {
+				$(this).remove();
+			}
+		});
+	});
 }
 
 /* Function to start a ringtone when deleting tiles */
@@ -424,6 +447,18 @@ function sound_game_win()
 	audio.autoplay = true;
 }
 
+/* Function to start a ringtone in game */
+function sound_in_game()
+{
+	let audio = new Audio();
+	
+	audio.src = 'sound/sound.mp3';
+	
+	audio.autoplay = true;
+	
+	audio.loop = "on";
+}
+
 /* The generation of the initial set of tiles */
 function gen_set_tile()
 {
@@ -456,10 +491,12 @@ function gen_set_tile()
 /* Function for shuffling tiles and changing the number of shuffles */
 function click_for_reload() 
 {
-	if (document.getElementById("gamefield") != null)
+	if (document.getElementById("losefield") == null && document.getElementById("winfield") == null)
 	{
 		if (count_reload > 0)
 		{
+			let count_isStreak = 0;
+			
 			count_reload--;
 	
 			text_reload_del = document.getElementById("text_reload");
@@ -480,8 +517,29 @@ function click_for_reload()
 		
 			gen_set_tile();
 		
-			sound_stir_tile()
-		}	
+			sound_stir_tile();
+			
+			/* Checking that there is a group of tiles on the field */
+			for(i = 0; i < numRows; i++)
+			{
+				for (j = 0; j < numCols; j++)
+				{
+					if(!isStreak(i, j))
+					{
+						count_isStreak++;
+					}
+				}
+			}
+			
+			if (count_isStreak == (numRows * numCols))
+			{
+				lose();
+		
+				sound_game_over();
+		
+				auxiliary_function();
+			}
+		}
 	}
 };
 
@@ -499,7 +557,7 @@ function click_for_start()
 	movingItems = 0;
 	count_reload = 5;
 	points = 0;  
-	remaining_moves = 8;
+	remaining_moves = moves;
 	
 	id_start = 1;
 	
@@ -582,7 +640,7 @@ function isStreak(row, col)
 function auxiliary_function()
 {
 	del_all_tile();
-		
+	
 	start_stop();
 		
 	let button_start = document.getElementById('button_start');
@@ -594,77 +652,89 @@ function auxiliary_function()
 	button_stop.onclick = click_for_stop;
 }
 
-/* Marking the tiles to be deleted with the remove class and removing them from the grid */
+/* Marking the tiles to be deleted with the remove class */
+function checkTiles(row, col, checkTile)
+{
+	let tmp = row;
+	
+	if (jewels[row][col] != -1)
+	{
+		$("#" + tileIdPrefix + "_" + row + "_" + col).addClass("remove");
+	
+		jewels[row][col] = -1;
+	
+		points += increase_points;
+	}
+
+	if(tmp > 0 && jewels[tmp - 1][col] == checkTile)
+	{
+		$("#" + tileIdPrefix + "_" + (tmp - 1) + "_" + col).addClass("remove");
+
+		jewels[tmp - 1][col] = -1;
+			
+		points += increase_points;
+			
+		tmp--;
+
+		checkTiles(tmp, col, checkTile);
+	}
+		
+	tmp = row;
+    
+	if(tmp < numRows - 1 && jewels[tmp + 1][col] == checkTile)
+	{
+		$("#" + tileIdPrefix + "_" + (tmp + 1) + "_" + col).addClass("remove");
+
+		jewels[tmp + 1][col] = -1;
+			
+		points += increase_points;
+			
+		tmp++;
+
+		checkTiles(tmp, col, checkTile);
+	}
+
+	tmp = col;
+
+	if(tmp > 0 && jewels[row][tmp - 1] == checkTile)
+	{
+		$("#" + tileIdPrefix + "_" + row + "_" + (tmp - 1)).addClass("remove");
+
+		jewels[row][tmp - 1] = -1;
+			
+		points += increase_points;
+
+		tmp--;
+
+		checkTiles(row, tmp, checkTile);
+	}
+		
+	tmp = col;
+		
+	if(tmp < numCols - 1 && jewels[row][tmp + 1] == checkTile)
+	{
+		$("#" + tileIdPrefix + "_" + row + "_" + (tmp + 1)).addClass("remove");
+
+		jewels[row][tmp + 1] = -1;
+			
+		points += increase_points;
+			
+		tmp++;
+
+		checkTiles(row, tmp, checkTile);
+	}
+}
+
+/* Removing them from the grid */
 function removeTiles(row, col) 
 {
 	let tileValue = jewels[row][col];
-	let tmp = row;
 	
-	$("#" + tileIdPrefix + "_" + row + "_" + col).addClass("remove");
-	
-	if(isVerticalStreak(row, col))
-	{	
-		while(tmp > 0 && jewels[tmp - 1][col] == tileValue)
-		{
-			$("#" + tileIdPrefix + "_" + (tmp - 1) + "_" + col).addClass("remove");
-
-			jewels[tmp - 1][col] = -1;
-			
-			points += increase_points;
-			
-			tmp--;
-		}
-		
-		tmp = row;
-    
-		while(tmp < numRows - 1 && jewels[tmp + 1][col] == tileValue)
-		{
-			$("#" + tileIdPrefix + "_" + (tmp + 1) + "_" + col).addClass("remove");
-
-			jewels[tmp + 1][col] = -1;
-			
-			points += increase_points;
-			
-			tmp++;
-		}
-	}
-	
-	if(isHorizontalStreak(row, col))
-	{
-		tmp = col;
-
-		while(tmp > 0 && jewels[row][tmp - 1] == tileValue)
-		{
-			$("#" + tileIdPrefix + "_" + row + "_" + (tmp - 1)).addClass("remove");
-
-			jewels[row][tmp - 1] = -1;
-			
-			points += increase_points;
-
-			tmp--;
-		}
-		
-		tmp = col;
-		
-		while(tmp < numCols - 1 && jewels[row][tmp + 1] == tileValue)
-		{
-			$("#" + tileIdPrefix + "_" + row + "_" + (tmp + 1)).addClass("remove");
-
-			jewels[row][tmp + 1] = -1;
-			
-			points += increase_points;
-			
-			tmp++;
-		}
-	}
-	
-	jewels[row][col] = -1;
-	
-	sound_del_tile();
-	
-	points += increase_points;
+	checkTiles(row, col, tileValue);
 	
 	remaining_moves--;
+
+	sound_del_tile();
 	
 	del_text_points_and_moves()
 	
@@ -679,11 +749,11 @@ function removeTiles(row, col)
 	
 	if (remaining_moves == 0 && points < finish_points)
 	{
+		auxiliary_function();
+	
 		lose();
 		
 		sound_game_over();
-		
-		auxiliary_function();
 	}	
 }
 
@@ -697,7 +767,7 @@ function tileFade()
 			opacity:0
 		},
 		{
-			duration: 200,
+			duration: 450,
 			complete: function() {
 				$(this).remove();
 				
@@ -877,7 +947,7 @@ function tapHandler(event, target)
 	}
 }
 
-/* auxiliary function 2 */
+/* Auxiliary function 2 */
 function auxiliary_function_2()
 {
 	create_game_field();  // Creating a playing field
@@ -897,6 +967,8 @@ function auxiliary_function_2()
 		document.getElementById('inf_field').remove();
 		
 		document.getElementById('start_button').remove();
+		
+		sound_in_game();
 	}
 		
 	let button_reload = document.getElementById('button_reload');
